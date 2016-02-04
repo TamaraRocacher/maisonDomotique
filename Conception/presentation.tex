@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{lmodern} %pack de police
+\usepackage{eurosym}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+
+\title{Controler sa maison à l'aide d'un Raspberry:  Présentation générale}
+\author{\textsc{Essig} Meryll \and \textsc{Fortin} Loic \and \textsc{Rocacher} Tamara}
+
+
+\begin{document}
+\maketitle
+
+\section*{Introduction}
+Ce document a pour but de présenter le contexte de notre sujet de TER. Pour cela, nous détaillerons le sujet en trois parties: le domaine d'étude (domotique), le materiel utilisé (Raspberry) et les moyens d'utilisation (langage Java).
+
+\section*{Présentation générale du Raspberry Pi}
+Le Raspberry Pi est un ordinateur de la taille d'une carte de crédit. Il a été conçu dans le but de promouvoir la programmation informatique. Il contient des outils déjà installés tels que python qui est le langage favorisé par la fondation Raspberry Pi et scratch, un environnement d'apprentissage de la programmation. Pour 35\euro{}, l'utilisateur peut avoir un système linux fonctionnel, ou il ne faudra y rajouter qu'un écran, un clavier, et une souris, et une carte de stockage flash, de quoi faciliter le décollage de l'informatique dans les pays non-occidentaux.
+
+L'usage du raspberry pi ne s'arrête pas là puisque ses ports GPIO (General Purpose Input/Output) permettent de le connecter directement à un circuit électronique, que l'on peut concevoir avec une carte Arduino par exemple. Les ports GPIO permettent en soit de fournir du courant électrique aux composants connectés pour les déclencher avec une logique plus complexe (par exemple : envoyer à un moteur de robot l'information que renvoie un algorithme de chemin).
+
+De nombreux projets amateurs sont répertoriés par le site web\\ www.instructables.com, une communauté de projets DIY (Do It Yourself), bien souvent Open Source.
+
+En somme, le raspberry pi est un moyen très abordable de faire de l'electronique embarquée pour un prix dérisoire comparé aux offres qui précédaient son arrivée. De nombreux projets avec un raspberry pi ont démarré sur kickstarter et d'autres plateformes de crowdfunding et on eu du succès comme mycroft (une intelligence artificielle open source) qui à réussi à lever 127 520\$. Le Raspberry Pi fait grossir petit à petit le marché de l'internet des objets, de la domotique, et de la robotique, aux cotés des grandes entreprises. 
+
+\section*{Raspberry Pi et Java}
+
+\subsection*{Introduction au développement Java sur système embarqué}
+L’utilisation de \textbf{Java} sur \textbf{Raspberry Pi} est possible au travers d’un système \textbf{linux} compatible architecture \textbf{ARM}. On peut retenir entre autres:
+\begin{itemize}
+\item Raspbian: système d’exploitation officiel du Raspberry Pi basé sur Debian
+\item Debian
+\item Ubuntu
+\end{itemize}
+\\
+Une liste (non exhaustive) est disponible sur le site officiel du Raspberry:\\
+\textbf{https://www.raspberrypi.org/downloads/}
+\\
+Tutoriel pour Debian:\\
+\textbf{http://www.oracle.com/technetwork/articles/java/raspberrypi-1704896.html}
+\\
+\\
+En outre, le système Windows 10 et compatible lui aussi.
+\\
+\\
+Pour pouvoir utiliser Java sur un Raspberry (ou tout autre système compatible), il est nécessaire dans un premier temps d’installer un kit de développement Java proposé par Oracle. \\
+Il existe 2 principaux kits:
+\begin{itemize}
+\item Oracle \textbf{Java Standard Edition} (Oracle \textbf{Java SE})
+\item Oracle \textbf{Java Standard Edition Embedded} (Oracle \textbf{Java SE Embedded}).
+\end{itemize}
+\\
+Oracle Java SE est le kit de base pour le développement et le déploiement d’applications Java sur plateforme bureau, serveur et maintenant embarqué et mobile. Une API très riche est incluse et il existe une version ARM du kit. Elle nécessite un dispositif un minimum puissant.
+Les instructions pour le téléchargement et l’installation de Oracle Java SE sur un Raspberry sont décrites ici:\\
+\textbf{http://www.rpiblog.com/2014/03/installing-oracle-jdk-8-on-raspberry-pi.html}
+\\
+\\
+Oracle Java SE Embedded est une version allégée de Oracle Java SE spécifiquement conçue pour les systèmes embarqués et mobiles ayant de faibles ressources.
+Les instructions pour le téléchargement et l’installation de Oracle Java SE Embedded sur un système Raspberry sont décrites sur la documentation officielle d’Oracle:\\
+\textbf{http://www.oracle.com/technetwork/articles/java/raspberrypi-1704896.html}
+\\
+\\
+\textbf{N.B.:} Il existe une autre alternative à Oracle Java SE Embedded, il s’agit de Oracle \textbf{Java Micro Edition Embedded} (Oracle \textbf{Java ME Embedded}). Il s’agit d’une version plus légère et légèrement différente de Oracle Java SE Embedded, conçue pour les systèmes mobiles et embarqués ayant de très faibles ressources. 
+
+\\
+\\
+Le Raspberry étant suffisamment puissant pour utiliser Oracle Java SE, c’est cette version qui sera installée et utilisée et qui servira de référence dans la suite de cette partie. De plus, il s’agit du kit le plus couramment utilisé lors de la découverte d’un système embarqué.
+Il inclus avec le système d’exploitation Raspbian et sera à installer sur une autre distribution.
+
+Par la suite, le développement logiciel en Java pourra être fait normalement avec un éditeur/IDE, soit directement sur le Raspberry, soit depuis un système hôte.
+
+\subsection{Outils pour le développement Java sur système embarqué}
+Le contrôle d’un Raspberry grâce à Java peut être fait de deux manières principales:
+\begin{itemize}
+\item Utiliser l’API présente dans Java SE + jdk.dio (pour le contrôle d’autres GPIO) ainsi que les API spécifiques aux cartes annexes du Raspberry
+\item Utiliser une bibliothèque plus haut niveau, à savoir Pi4j, qui offre une API Java permettant l’accès I/O au Raspberry (au travers du connecteur GPIO)
+\end{itemize}
+\\
+\\
+\textbf{Plus d’informations sur les GPIO ainsi que sur Pi4j et l’utilisation de Java sur Raspberry  sont disponibles sur les sites suivants:}\\
+https://fr.wikipedia.org/wiki/General\_purpose\_input/Output (GPIO)\\
+https://www.voxxed.com/blog/2014/12/device-io-api/ (jdk.io)\\
+http://pi4j.com/ (bibliothèque Pi4j)\\
+http://java.developpez.com/actu/88995/Developper-en-Java-SE-et-JavaFX-pour-Raspberry-Pi-un-billet-de-blog-de-Fabrice-Bouye/ (Java SE + JavaFX sur Raspberry)
+\\
+\\
+\textbf{Installation manuelle du JDK sur Raspberry:}\\
+http://raspberrypi.stackexchange.com/questions/4683/how-to-install-the-java-jdk-on-raspberry-pi
+\\
+\\
+\textbf{Formation Elephorm sur les fondamentaux du Raspberry:}\\
+http://www.elephorm.com/informatique/apprendre-fondamentaux-raspberry-pi.html\#a\_aid=raspbianfrance
+\\
+\\
+\textbf{Support de Java SE Embedded dans Netbeans:}\\
+https://netbeans.org/kb/docs/java/javase-embedded.html
+\\
+\\
+\textbf{Plugin LaunchPi pour Eclipse:}\\
+https://github.com/tsvetan-stoyanov/launchpi
+\\
+\\
+\textbf{MOOC de Oracle sur le Raspberry et Java ME:}\\
+https://apexapps.oracle.com/pls/apex/f?p=44785:24:0::NO:24:P24\_CONTENT\_ID,P24\_PREV\_PAGE:8811,29\\
+https://apexapps.oracle.com/pls/apex/f?p=44785:24:0::NO:24:P24\_CONTENT\_ID,P24\_PREV\_PAGE:9516,29\\
+https://apexapps.oracle.com/pls/apex/f?p=44785:24:0::NO:24:P24\_CONTENT\_ID,P24\_PREV\_PAGE:9517,29\\
+https://apexapps.oracle.com/pls/apex/f?p=44785:24:0::NO:24:P24\_CONTENT\_ID,P24\_PREV\_PAGE:9518,29\\
+https://apexapps.oracle.com/pls/apex/f?p=44785:24:0::NO:24:P24\_CONTENT\_ID,P24\_PREV\_PAGE:9519,29\\
+
+
+\section*{Vous avez dit... Domotique?}
+La \textbf{domotique} est un domaine émergent, au croisement de l'électronique, de l'informatique et des techniques du batiment; permettant de centraliser le controle de divers appareils électriques au sein de la maison.\\
+\\
+Ce domaine, grace aux nouvelles technologies, répond aux besoins de confort, de sécurité et de controle, en permettent par exemple, de:
+\begin{itemize}
+  \item déterminer un mode \og rentrer a la maison\fg  à activer en partant du bureau pour mettre en route le chauffage, ouvrir les volets, mettre en marche la cafetière...
+  \item vérifier les accès au domicile grace à des détecteurs capacitifs (ouverture d'une porte), de présence, de poids...et prévenir l'utilisateur
+  \item Controler la porte principale de la maison par smartphone en cas de perte de clé
+\end{itemize}
+\\
+\newline
+La domotique est donc un ensemble de techniques de différents domaines, faisant grandement appel à l'informatique: les données reçues (capteur, signal, etc) doivent etre traitées afin de renvoyer une ou plusieurs instructions aux éléments commandés, et différents objets peuvent interagir entre eux. La programmation permettra alors non seulement l'automatisation, mais aussi d'assurer la cohérence des actions.
+Ainsi, la domotique trouve ses contraintes dans le materiel, qui pose des limites à l'infinité d'actions controlables.
+\end{document}
