@@ -1,0 +1,181 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{lmodern} %pack de police
+\usepackage{eurosym}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{listings}
+
+\usepackage{xcolor}
+
+\definecolor{Zgris}{rgb}{0.87,0.85,0.85}
+
+\newsavebox{\BBbox}
+\newenvironment{DDbox}[1]{
+\begin{lrbox}{\BBbox}\begin{minipage}{\linewidth}}
+{\end{minipage}\end{lrbox}\noindent\colorbox{Zgris}{\usebox{\BBbox}} \\
+[.5cm]}
+
+%paramètres de listings
+\lstset{
+language=java,
+basicstyle=\ttfamily\small, %
+identifierstyle=\color{red}, %
+keywordstyle=\color{blue}, %
+stringstyle=\color{black!60}, %
+commentstyle=\it\color{green!95!yellow!1}, %
+columns=flexible, %
+tabsize=2, %
+extendedchars=true, %
+showspaces=false, %
+showstringspaces=false, %
+numbers=left, %
+numberstyle=\tiny, %
+breaklines=true, %
+breakautoindent=true, %
+captionpos=b
+}
+
+
+\title{Controler sa maison à l'aide d'un Raspberry: Exemples de codes de controle des composants}
+\author{\textsc{Essig} Meryll \and \textsc{Fortin} Loic \and \textsc{Rocacher} Tamara}
+
+
+\begin{document}
+\maketitle
+
+\vfill
+\vfill
+\section*{Introduction}
+Dans l'attente du materiel electronique, nous avons commencé à organiser le code  de controle des differents composants. Pour cela nous avons définit les premiers éléments que nous voulions utiliser pour le controle de la maison.
+Dans l'idée d'etre proche de la réalité, nous voulons travailler sur une maquette de maison, ce qui implique des limites sur ce qui es controlable et sur la taille des composants. Ainsi, nous avons décider de commencer avec les actions suivantes:
+\vfill
+\begin{itemize}
+\item controler la lumières des pièces de vie,
+\item controler la mise en marche du chauffage principale,
+\item controler l'ouverture des volets de la chambre
+\end{itemize}
+\vfill
+Chaque composant pourra etre controlé sur demande de l'utilisateur, via l'interface, ou automatiquement dans different modes pré-définis:
+\vfill
+\begin{itemize}
+\item mode jour: lorsque le soleil se lève, les volets s'ouvrent,
+\item mode nuit: lorsque le soleil se couche, les volets se ferment, les lumières s'allument
+\item mode hiver: le chauffage se met en marche sur une periode définie par l'utilisateur
+\end{itemize}
+\vfill
+D'autres modes ou d'autres actions pourront etre ajoutés par la suite. Cependant nous sommes partis de ces trois composants pour rechercher et construire le code général de chacun.
+\vfill
+\vfill
+\section*{Controle d'une LED pour la lumière}
+\begin{DDbox}{\linewidth}
+\begin{lstlisting}
+
+import com.pi4j.io.gpio.GpioController; // Permet de contrôler les GPIO
+import com.pi4j.io.gpio.GpioFactory; // Contient les méthodes statiques permettant de créer des instances de GpioController.
+import com.pi4j.io.gpio.GpioPinDigitalOutput; // Les sorties sur le GPIO (contrôle sortant des GPIO)
+import com.pi4j.io.gpio.PinState; // Permet d'avoir des informations sur l'état du pin
+import com.pi4j.io.gpio.RaspiPin; // Les différents pins du Raspeberry
+import java.lang.System;
+import java.lang.Thread;
+import java.lang.InterruptedException;
+
+public class led {
+    private final GpioPinDigitalOutput pin; // Permet l'accès en sortie vers le pin.
+
+    public led(int pin) {
+        // Pin fixé sur 1 dans le code. Ne tien pas compte de l'argument de fonction
+
+        // Il faudrait vérifier que le pin est bon, mais on va considérer que oui
+        this.pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LedControl", PinState.LOW); // L'accès en écriture au pin pour allumer la led. Par défaut, la led est éteinte.
+    }
+ /*
+    Allume la led
+     */
+    public void on() {
+        //this.pin.setShutdownOptions(true, PinState.HIGH);
+        this.pin.high();
+    }
+
+    /*
+    Eteint la led
+     */
+    public void off() {
+        //this.pin.setShutdownOptions(true, PinState.LOW);
+        this.pin.low();
+    }
+
+
+    /*
+    Vrai si la led est éteinte, faux sinon.
+     */
+    public boolean isLow() {
+        return this.pin.isLow();
+    }
+
+    /*
+    Vrai si la led est allumée, faux sinon
+     */
+    public boolean isHigh() {
+        return this.pin.isHigh();
+    } /*
+    Récupère l'état du pin (HIGH ou LOW)
+     */
+    public boolean getState() {
+        return this.pin.getState();
+    }
+\end{lstlisting}
+\end{DDbox}
+\newpage
+\clearpage
+\begin{DDbox}{\linewidth}
+\begin{lstlisting}
+    /*
+    Eclairage clignotant de la led
+
+    time int Représente le temps que doit rester la led alllumée
+     */
+    public void pulse(int time) {
+        // Même chose, il faudrait vérifier que les valeurs de time soient correctes.
+        this.pin.pulse(time, true);
+    }
+}
+
+public class ledControl {
+    /*
+    Programme principal, permet de lancer (théoriquement...) un test de led sur le raspberry.
+    Note : un thread est susceptible de lancer un InterruptedException. Il est ignoré ici.
+     */
+    public static void main(String[] args) throws InterruptedException {
+        led ledtest = new led(1);
+
+        // Donne un accès au gpio
+        final GpioController gpio = GpioFactory.getInstance();
+
+        ledtest.on();
+System.out.println("LED allumée.");
+
+        Thread.sleep(5000);
+
+        ledtest.off();
+
+        System.out.println("LED éteinte.");
+
+        Thread.sleep(5000);
+
+        System.out.println("LED blink (interval : 1s).");
+
+        ledtest.pulse(1000);
+
+        // Libère les accès GPIO
+        gpio.shutdown();
+    }
+}
+\end{lstlisting}
+\end{DDbox}
+\section*{Controle d'un micro-moteur pour les volets électriques}
+
+\section*{Controle d'un luxmetre pour la detection de luminosité exterieure}
+
+\end{document}
