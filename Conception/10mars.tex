@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{lmodern} %pack de police
+\usepackage{eurosym}
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{listings}
+
+\usepackage{xcolor}
+
+\definecolor{Zgris}{rgb}{0.87,0.85,0.85}
+
+\newsavebox{\BBbox}
+\newenvironment{DDbox}[1]{
+\begin{lrbox}{\BBbox}\begin{minipage}{\linewidth}}
+{\end{minipage}\end{lrbox}\noindent\colorbox{Zgris}{\usebox{\BBbox}} \\
+[.5cm]}
+
+%paramètres de listings
+\lstset{
+language=java,
+basicstyle=\ttfamily\small, %
+identifierstyle=\color{red}, %
+keywordstyle=\color{blue}, %
+stringstyle=\color{black!60}, %
+commentstyle=\it\color{green!95!yellow!1}, %
+columns=flexible, %
+tabsize=2, %
+extendedchars=true, %
+showspaces=false, %
+showstringspaces=false, %
+numbers=left, %
+numberstyle=\tiny, %
+breaklines=true, %
+breakautoindent=true, %
+captionpos=b
+}
+
+
+\title{Controler sa maison à l'aide d'un Raspberry: Exemples de codes de controle des composants}
+\author{\textsc{Essig} Meryll \and \textsc{Fortin} Loic \and \textsc{Rocacher} Tamara}
+
+
+\begin{document}
+\maketitle
+\section*{Introduction}
+Suite a la reception du Raspberry Pi, nous avons installé Raspian sur une carte SD puis allumé le Raspberry Pi. Nous avons alors pu faire les installations préalables necessaires pour pouvoir se connecter par ssh ou avoir acces au bureau grace a VNC, et biensur pouvoir commencer à coder (emacs, pi4j, python,...).
+\section*{Avancement}
+Nous avons commencé par tester l'allumage d'une LED directement en console, puis a l'aide de pi4j dans un code simple. \\
+Nous avons alors rajouté un circuit permettant de recupérer les données d'une photo-résistance, à l'aide d'un condensateur. Pour traiter les données nous avons testé un code java écrit à partir d'un script python fonctionnel, que nous avons modifié de sorte à allumer la LED lorsque la luminosité est faible.
+\section*{Difficulté}
+Le code java pour traiter les données du circuit photo-résistance condensateur pose des problème du fait que la donnée est analogique alors que les pins du Raspberry Pi traite des données binaire.
+Après plusieurs essais, nous avons constaté que lors l'execution du programme java le pin change d'etat trop vite (capacité du condensateur?), ce qui n'arrive pas avec le script python.
+\section*{Solution}
+Afin de simplifier le code, nous traiterons les données analogiques de la photo-résistance à l'aide d'un Arduino, qui sera connecté en USB au Raspberry Pi. Notre programme pourra alors recupérer un flux de données analogiques.
+\section*{A venir}
+Pour la prochaine semaine, nous prévoyons de commencer par connecter la carte Arduino au Raspberry Pi pour faire des test. D'autre part, nous commencerons le noyau du programme de controle, rattaché aux différents éléments que nous cablerons aux GPIO.
+\end{document}
